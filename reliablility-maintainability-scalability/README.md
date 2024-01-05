@@ -62,3 +62,62 @@ Examples of load parameters
 - Ratio of read to write in a database
 
 This section discusses an interesting use case of Twitter. Check it [here](../use-cases/twitter/).
+
+We should be measuring the current **performance** of the system under a baseline load. And then see how the performance is impacted or degrades when the load increases.
+
+Thus we should have a way to measure the **performance**. Some performance metrics are:
+- Throughput
+- Response time, **incorrectly** referred as Latency.
+
+This chapter briefly talks about two concepts related to Response time
+- Network delay
+- Queueing delay
+
+Very often we measure **average response time**. However it's not a very useful metric. A better metric would be in terms of **percentiles**.
+
+- **Head of line blocking** can significantly affect the response time at high percentiles.
+
+#### Coping with Load
+
+How to maintain a desired **performance** when **load parameters** increase.
+
+Systems can scale in two directions:
+- Scale up: Vertical scaling
+- Scale out: Horizontal scaling
+
+Systems can scale in two ways:
+- Auto Scaling. Can also be referred as Elastic scaling
+- Manual Scaling. Gives more confidence and would have less operational surprises.
+
+Common wisdom:
+- Scale out with stateless services, like application servers.
+- Scale up stateful services, like database.
+
+### Maintainability
+- Operability
+- Simplicity
+- Evolvability
+
+#### Operability
+
+Make it easy to operate the system. Things like the following should be easy
+- Understanding system health
+- Investigating issues
+
+Thus the following can be considered as part of maintainable systems
+- Monitoring
+- Logging
+
+#### Simplicity
+
+Simple is better than complex. We should write proper abstractions.
+
+Abstraction: Hide complex implementation details behind a simple and clean facade.
+
+#### Evolvability
+
+System is amenable to change and enhancements.
+
+Following practices can aide in keeping an evolvable system
+- Agile methodologies
+- TDD
