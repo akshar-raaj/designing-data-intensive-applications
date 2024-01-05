@@ -49,3 +49,16 @@ Software Errors should be anticipated well and the system should be extensively 
 Cost of an unreliable system
 - Productivity Loss
 - Revenue loss
+
+### Scalability
+
+Scalability is the ability of the system to cope up with increased load.
+
+Load can be described by **load parameters**.
+
+Examples of load parameters
+- Number of requests per second to a web server
+- Number of concurrent users
+- Ratio of read to write in a database
+
+This section discusses an interesting use case of Twitter. Check it [here](../use-cases/twitter/).
