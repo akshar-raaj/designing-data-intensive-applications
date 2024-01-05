@@ -24,6 +24,8 @@ The growth could be in the following form:
 
 It should be easy to add **enhancements** and **evolve** the system over time.
 
+---
+
 ### Reliability
 
 System should be fault-tolerant/resilient. It should be able to **anticipate** the things that can go wrong and be prepared for it.
