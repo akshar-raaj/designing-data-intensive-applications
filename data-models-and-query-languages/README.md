@@ -20,6 +20,8 @@ We talked about Abstraction in Chapter 1 :)
 
 The driving forces behind the evolution of NoSQL database
 - Scalability challenges of relational databases
+  - In terms of data volume
+  - In terms of write througput
 - Restrictiveness of relational databases
 - Impedance mismatch of relational databases
 - Need for better data locality
@@ -45,3 +47,39 @@ A resume would have the following:
 - array of positions held
 
 Having a separate table for users, experiences and positions would be an overkill.
+
+#### Limitations
+
+Document database suffer from following limitations.
+1. Difficult to model many-to-one relationship or many-to-many relationship. One-to-many is easy.
+2. Weak join support.
+
+Consider two entities.
+- Country
+- Person
+
+Many person belong to same country. We need to operate on person entity independently of country. Thus person cannot be embedded in country. Hence country reference will have to be kept in person.
+With document database the responsibility of join shifts from database to application code.
+
+If we want to avoid join, the country info would have to be duplicated for each person. This would lead to data denormalization with it's own challenges.
+- Data duplication
+- Write overheads during update
+- Possibility of losing data integrity during updates
+
+In such cases, document-oriented databases become **less appealing**.
+
+### More comparison
+
+Relational database enforce a fixed schema at write time. Document database do not enforce a schema, the schema is only inferred at read time by client.
+This is very similar to how static type languages differ from dynamic type languages.
+
+## Relational Database vs Document-oriented database
+
+| Relational Database | Document-oriented database |
+|---------------------------------------------------|
+| Difficult to scale-out | More amenable to scale-out |
+| Restrictive schema | Permissive schema |
+| Impedance mismatch | Data representation more close to application code | 
+| No data locality. More disk seeks might be needed to pull related data | Better data locality |
+| Easy to model many-to-one | Difficult to model many-to-one |
+| Joins can be natively performed | Weak join support. Join responsibility shifted to application code |
