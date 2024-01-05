@@ -18,3 +18,4 @@ We discuss the **principles** and **trade-offs** that are fundamental to data sy
 This book has following chapters:
 
 1. [Reliability, Scalability and Maintainability](./reliablility-maintainability-scalability/)
+2. [Data Models and Query Languages](./data-models-and-query-languages/)
