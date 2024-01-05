@@ -76,7 +76,7 @@ This is very similar to how static type languages differ from dynamic type langu
 ## Relational Database vs Document-oriented database
 
 | Relational Database | Document-oriented database |
-|---------------------------------------------------|
+|---------------------|------------------------------|
 | Difficult to scale-out | More amenable to scale-out |
 | Restrictive schema | Permissive schema |
 | Impedance mismatch | Data representation more close to application code | 
