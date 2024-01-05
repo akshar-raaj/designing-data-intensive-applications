@@ -121,3 +121,8 @@ System is amenable to change and enhancements.
 Following practices can aide in keeping an evolvable system
 - Agile methodologies
 - TDD
+
+### Miscellaneous
+
+- AWS guarantees elasticity and makes reliablity trade-off. AWS Instances have been know to stop abruptly.
+- p95, p99, and high percentile response times are usually high. This can happen when a slow request keeps the CPU cores occupied and this request has a long queue time.
