@@ -11,4 +11,4 @@ Applications where data is the primary challenges. It could be in the form of:
 
     The enduring principles remain true irrespective of which data system we are dealing with.
 
-We discuss the *principles* and *trade-offs* that are fundamental to data systems.
+We discuss the **principles** and **trade-offs** that are fundamental to data systems.
