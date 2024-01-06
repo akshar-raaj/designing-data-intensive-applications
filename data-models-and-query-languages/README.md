@@ -73,7 +73,7 @@ In such cases, document-oriented databases become **less appealing**.
 Relational database enforce a fixed schema at write time. Document database do not enforce a schema, the schema is only inferred at read time by client.
 This is very similar to how static type languages differ from dynamic type languages.
 
-## Relational Database vs Document-oriented database
+### Relational Database vs Document-oriented database
 
 | Relational Database | Document-oriented database |
 |---------------------|------------------------------|
@@ -83,3 +83,24 @@ This is very similar to how static type languages differ from dynamic type langu
 | No data locality. More disk seeks might be needed to pull related data | Better data locality |
 | Easy to model many-to-one | Difficult to model many-to-one |
 | Joins can be natively performed | Weak join support. Join responsibility shifted to application code |
+
+---
+
+## Query Language
+
+A query language can be categorized into:
+- Declarative language
+- Imperative language
+
+Declarative language specifies the **what**. It doesn't specify **how**. Example: SQL
+SQL allows users to say I want the following columns from a particular relation fulfilling a particular condition. It is upto the Query optimizer to use appropriate index to provide better performance.
+Hence in SQL users only specify **what**. The implementation details are figured out by the query optimizer.
+
+Imperative language expects the users to know how the data is internally structured and which sequence of instructions to execute.
+
+---
+
+## Miscellaneous
+
+- Alter table to add a column is highly expensive in MySQL. The whole table needs to be moved on disk.
+- Updating value in document-database is a normal operation. However if the document size needs to change, the document needs to be moved on disk which can be expensive.
