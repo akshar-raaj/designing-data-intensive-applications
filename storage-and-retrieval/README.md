@@ -15,7 +15,7 @@ Appending to a file is the simplest possible write operation and it's hard to be
 
 A log structured storage engine keeps writing to an append only data file.
 
-## Index
+### Index
 
 We can keep appending records to a file. This is the storage part.
 However, during retrieval the entire file would have to be scanned unless there is an index. This would have a time complexity of O(n).
@@ -28,7 +28,7 @@ Two things worth mentioning about indexes:
 
 Indexes can significantly improve read. However indexes add an **overhead** during writes.
 
-## Hash indexes
+### Hash indexes
 
 A key-value database can be implemented using a log-structured storage engine. Let's assume the data is:
 
@@ -54,7 +54,7 @@ This hash-map can make even reads operation as O(1). Only one file **seek** woul
 
 This storage-engine is used in **Bitcask** storage engine of **Riak** database.
 
-### Deal with growing file size
+#### Deal with growing file size
 
 If a single apend-only file is used it can grow, become unmanageable and can reach the disk limit.
 
@@ -64,28 +64,50 @@ If a single apend-only file is used it can grow, become unmanageable and can rea
 Compaction: Throwing away duplicate keys from a segment and keeping only the most recent update for each key.
 Merging: Combining several segments into a single segment.
 
-### Deleting records
+#### Deleting records
 
 Add a deletion record to the data file. Also referred as **tombstone**.
 
 During compaction and merging, this tombstone is used to ignore and delete this key and associated values.
 
-### Crash recovery
+#### Crash recovery
 
 In case the system crashes or is restarted, the index, i.e in-memory hash-map is lost.
 It can be rebuilt from the data but it would take O(n).
 
 Thus a **snapshot** of in-memory hash is stored on disk, probably periodically. This can help build the index quickly in case of restarts.
 
-### Partial writes
+#### Partial writes
 
 Crashes can happen during middle of write causing partial writes. These writes should be rolled back. The system maintains a **checksum** allowing corrupted parts of the log to be detected and ignored.
 
-### Concurrent writes
+#### Concurrent writes
 
 Keep a single writer thread. Since the files are apend-only and sequential so this approach works.
 They can be read concurrently by multiple threads though.
 
-### Limitations
+#### Limitations
 - The keyspace **must** fit in memory.
 - Range queries are not efficient. Each key has to be looked up individually and value has to be seeked individually.
+
+### SSTable
+
+SSTable stands for Sorted String Table. It's a little deviation from the earlier format where writes to the database is immediately written to the append-log.
+With SSTable database writes are not written to the append-log immediately. The goal is to write key in sorted order to the append-log.
+
+A balanced tree is used as index in this case.
+When database writes happen, the key and value are first added to an in-memory balanced tree. This balanced-tree is always remains sorted. This is referred as **memtable**.
+
+Periodically a segment is created out of this sorted balanced tree when it's size exceeds a threshold.
+
+SSTable provides the following advantages:
+- Keyspace can be larger than available memory.
+- Compaction and merging is simpler because segments stay sorted.
+- Sparse index of SSTable on disk. This is possible because of sorted nature of data.
+- Data compression can be achieved as read requests search for data in a block.
+
+### Crash recovery
+
+Separate log for memtable.
+
+LSM Trees are based on SSTables.
