@@ -20,3 +20,4 @@ This book has following chapters:
 1. [Reliability, Scalability and Maintainability](./reliablility-maintainability-scalability/)
 2. [Data Models and Query Languages](./data-models-and-query-languages/)
 3. [Storage and Retrieval](./storage-and-retrieval/)
+4. [Replication](./replication/)
