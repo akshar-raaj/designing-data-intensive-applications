@@ -111,3 +111,88 @@ SSTable provides the following advantages:
 Separate log for memtable.
 
 LSM Trees are based on SSTables.
+
+## Page structured storage engine
+
+### B-Trees
+
+B-Trees are another indexing alternative.
+
+The key-value are stored in a sorted fashion allowing for:
+- Efficient key lookup
+- Range queries
+
+B-Trees store data in fixed-size blocks/pages rather than variable size segments.
+They read or write one page at a time.
+
+Every page contains keys or reference to other pages.
+Leaf pages contain the value for key inline or reference to the page with value.
+
+Branching factor - Number of references to child pages in one page of B-Tree.
+
+B-Tree performs in-place write in case of updates.
+
+A B-Tree with 4 KB pages and a branching factor of 500 can store (4KB * 500) data i.e 2 MB data.
+With a four-level tree, the addressable storage is (4 KB * 500 * 500 * 500 * 500) i.e 250 TB.
+
+#### Crash recovery
+
+Every write operation is also written to a Write Ahead Log (WAL) also referred as Redo Log.
+This is an append-only-file where every modification is written before being applied to the pages.
+
+Redo Log is used for crash recovery.
+
+#### Concurrency control
+
+Concurrency control is more complex in page-oriented storages compared to Append-only-log storages like LSMTree.
+
+One process might be reading from the page while other is simultaneouly trying to write to it.
+
+Latches, lightweight locks, are used for concurrency control.
+
+#### B-Tree optimizations
+
+a. The pages might not be sequential. Example: 100 keys might be on one page while the next 100 on other page. These pages may be at a distance from each other.
+Thus range queries for these 200 keys would need two seeks and head rotation.
+One optimization could be keeping leaf pages in sequential order
+
+b. Using more pointers. Example: Leaf pages keeping reference to sibling pages.
+
+### Storing values with index
+
+Two approaches:
+1. Clustered Index: Either store value i.e row with index.
+2. Heap file: Store value i.e row elsewhere. This is called heap file. The index has a reference to heap file.
+
+Heap file approach prevents data duplication.
+
+### Clustered Index
+
+Index row value to be kept along with index on the same page rather than keeping a reference to a heap file.
+
+In MySQL InnoDB, primary key is a clustered index. And secondary keys refer to the primary key.
+
+### Covering Index
+
+Covering index store value for some columns along with index.
+
+Assume table `person` with 4 columns:
+- id: primary key
+- name
+- age
+- city
+- gender
+
+Let's assume MySQL InnoDB storage engine.
+
+Thus there is a clustered index on id. Let's assume there is a secondary index on city.
+
+  select name, age from person where city = 'Hyderabad'
+
+In case there is a covering index on city with columns name and age covered, this query can be answered from the index.
+
+However doing:
+
+  select name, age, gender from person where city = 'Hyderabad'
+
+It would need to scan the relevant rows to fetch the name.
