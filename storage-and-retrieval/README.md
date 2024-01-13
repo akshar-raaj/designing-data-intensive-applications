@@ -218,6 +218,7 @@ Characteristics of an OLTP system:
 - Interactive
 - Real-time
 - Low latency read and writes
+- Highly available
 
 OLAP system characteristics:
 - Expensive queries
@@ -225,7 +226,7 @@ OLAP system characteristics:
 
 OLAP queries might be highly expensive and could impact performance of other concurrently executing queries. Thus database administrators want to guard the OLTP systems and not allow analysts to use this system.
 
-OLAP systems usually work with Data Warehouses.
+OLAP systems usually work with a separate database called Data Warehouses.
 
 ## Data warehouse
 
@@ -256,3 +257,30 @@ Fact table is at the center. And it is related to multiple dimension tables.
 Even dimensions table have relation or FK to more tables.
 
 Snowflake model is usually more normalized than star model.
+
+## Columnar storage
+
+Data warehouses usually have column-oriented storage.
+In OLTP systems, storage is laid out in a row-oriented fashion.
+
+However in OLAP systems, we rarely need to access all columns of a particular row. Instead often we need to **select multiple rows** and apply **aggregation** on them.
+Laying out data in a column-oriented fashion gives better throughput. Data warehouses usually have column-oriented storage layout.
+
+### Compression
+
+In Column-oriented storage the different data points have the same type and there are not a lot of distinct values. This gives opportunity to compress them.
+very superior compression can be achieved in column-oriented storage.
+
+Very often, **bitmap encoding** is used to perform compression.
+
+### Reduced bandwidth
+
+Less bandwidth to transfer compressed data from disk to memory.
+
+### Efficient use of CPU cycle
+
+At times, instead of using memory, query optimizers take compressed data and load into CPU's L1 cache and perform tight loops on this compressed data. **Tight loop** means no function calls.
+
+### Vectorized processing
+
+Operations are performed on compressed column data. This is called vectorized processing.
