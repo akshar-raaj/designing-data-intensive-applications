@@ -148,7 +148,7 @@ Concurrency control is more complex in page-oriented storages compared to Append
 
 One process might be reading from the page while other is simultaneouly trying to write to it.
 
-Latches, lightweight locks, are used for concurrency control.
+**Latches**, lightweight locks, are used for concurrency control.
 
 #### B-Tree optimizations
 
@@ -196,3 +196,63 @@ However doing:
   select name, age, gender from person where city = 'Hyderabad'
 
 It would need to scan the relevant rows to fetch the name.
+
+### Graph databases
+
+Used when there are a lot of different kind of entities and many many connections between these entities.
+
+Examples:
+- Web graph: Web pages related to each other
+- Social graph: People, Locations, Check-ins, Photos etc.
+- Road and rail networks
+
+In relational database, the number of joins to get relevant data is usually known in advance. However, with graph database the number of joins or traversal needed to retrieve the relevant data is not known in advance.
+
+Neo4j is a graph database. Cypher is the query language used to query Neo4j.
+
+**Property Graph Model** is one of the data models used in graph databases.
+
+## OLTP vs OLAP
+
+Characteristics of an OLTP system:
+- Interactive
+- Real-time
+- Low latency read and writes
+
+OLAP system characteristics:
+- Expensive queries
+- Ad-hoc queries
+
+OLAP queries might be highly expensive and could impact performance of other concurrently executing queries. Thus database administrators want to guard the OLTP systems and not allow analysts to use this system.
+
+OLAP systems usually work with Data Warehouses.
+
+## Data warehouse
+
+Optimized for analytic queries. An ETL process extracts the data from transactional systems, cleans and transforms the data and load into a data warehouse.
+
+Data Warehouses also mostly have SQL like interface. However their internal storage layer implementation highly differ from OLTP systems because of the kind of access patterns and workloads they have to deal with.
+
+Data warehouses usually have two types of tables:
+- Facts table
+- Dimension table
+
+Facts table store the events. Dimension tables store additional information and more columns around the events. Facts table's columns have FK to dimension tables.
+
+Usually Data warehouse tables are **wide**, i.e could have 100s of columns.
+
+### Data warehouse models
+
+There are usually two models:
+- Star model
+- Snowflake model
+
+#### Star model
+
+Fact table is at the center. And it is related to multiple dimension tables.
+
+#### Snowflake model
+
+Even dimensions table have relation or FK to more tables.
+
+Snowflake model is usually more normalized than star model.
